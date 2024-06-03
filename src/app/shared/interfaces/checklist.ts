@@ -1,6 +1,8 @@
 export interface Checklist {
   id: string;
   title: string;
+  badge: string;
+  badgeColor: string;
 }
 
 export type AddChecklist = Omit<Checklist, 'id'>;

@@ -1,9 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-:root {
-  // Add your color variables here
-  --color-dark: #1c1d3b;
-  --color-light: #ffffff;
-}
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
 
 html {
   height: 100%;
@@ -12,13 +11,15 @@ html {
 body {
   margin: 0;
   height: 100%;
-  background: var(--color-light);
   font-family: "Roboto", sans-serif;
 }
 
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem;
+.planes {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  margin: 10px; /* Optional: Add some margin if you want space around the image */
+  max-width: 800px; /* Adjust the size as needed */
+  max-height: 800px; /* Adjust the size as needed */
+  z-index: -1;
 }
