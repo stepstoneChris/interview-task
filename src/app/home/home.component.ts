@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ChecklistService } from '../shared/data-access/checklist.service';
 import { Checklist } from '../shared/interfaces/checklist';
 import { FormModalComponent } from '../shared/ui/form-modal/form-modal.component';
@@ -20,7 +20,9 @@ export default class HomeComponent {
   checklistBeingEdited = signal<Partial<Checklist> | null>(null);
 
   checklistForm = this.formBuilder.nonNullable.group({
-    title: [''],
+    title: ['', Validators.required],
+    badge: [''],
+    badgeColor: [''],
   });
 
   constructor() {
@@ -32,6 +34,8 @@ export default class HomeComponent {
       } else {
         this.checklistForm.patchValue({
           title: checklist.title,
+          badge: checklist.badge,
+          badgeColor: checklist.badgeColor,
         });
       }
     });

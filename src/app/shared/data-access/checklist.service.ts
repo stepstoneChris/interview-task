@@ -13,6 +13,7 @@ export interface ChecklistsState {
   checklists: Checklist[];
   loaded: boolean;
   error: string | null;
+  searchTerm: string;
 }
 
 @Injectable({
@@ -27,12 +28,19 @@ export class ChecklistService {
     checklists: [],
     loaded: false,
     error: null,
+    searchTerm: '',
   });
 
   // selectors
   checklists = computed(() => this.state().checklists);
   loaded = computed(() => this.state().loaded);
   error = computed(() => this.state().error);
+  filteredChecklists = computed(() => {
+    const term = this.state().searchTerm.toLowerCase();
+    return this.state().checklists.filter((checklist) =>
+      checklist.title.toLowerCase().includes(term)
+    );
+  });
 
   // sources
   private checklistsLoaded$ = this.storageService.loadChecklists();
@@ -71,7 +79,12 @@ export class ChecklistService {
         ...state,
         checklists: state.checklists.map((checklist) =>
           checklist.id === update.id
-            ? { ...checklist, title: update.data.title }
+            ? {
+                ...checklist,
+                title: update.data.title,
+                badge: update.data.badge,
+                badgeColor: update.data.badgeColor,
+              }
             : checklist
         ),
       }))
@@ -83,6 +96,13 @@ export class ChecklistService {
         this.storageService.saveChecklists(this.checklists());
       }
     });
+  }
+
+  searchList(term: string) {
+    this.state.update((state) => ({
+      ...state,
+      searchTerm: term,
+    }));
   }
 
   private addIdToChecklist(checklist: AddChecklist) {
